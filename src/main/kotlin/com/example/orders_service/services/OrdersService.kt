@@ -9,11 +9,13 @@ import java.math.BigDecimal
 import java.util.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import kotlin.reflect.full.memberFunctions
 
 @Service
 class OrdersService(
     private val ordersRepository: OrdersRepository,
     private val productsRepository: ProductsRepository,
+    private val offersService: OffersService,
 ) {
     private val logger = LoggerFactory.getLogger(OrdersService::class.java)
 
@@ -34,8 +36,12 @@ class OrdersService(
             savedOrder.orderLines.add(it)
         }
 
-        savedOrder.totalAmount  = order.orderLines.sumOf { orderDetail ->
-            BigDecimal(orderDetail.quantity) * (orderDetail.product.price ?: BigDecimal(0))
+        savedOrder.totalAmount = order.orderLines.sumOf { orderLine ->
+            if (orderLine.product.offer != null) {
+                // next equivalent to: offerServices[orderLine.product.offer](orderLine)
+                val method = OffersService::class.memberFunctions.find { it.name == orderLine.product.offer }
+                method?.call(offersService, orderLine) as BigDecimal
+            } else offersService.noDiscountPrice(orderLine)
         }
         return ordersRepository.save(savedOrder);
     }

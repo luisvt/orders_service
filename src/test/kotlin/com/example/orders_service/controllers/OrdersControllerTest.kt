@@ -35,8 +35,12 @@ class OrdersControllerTest(
             content {
                 jsonContent {
                     isEqualTo(
-                        """{"orderLines":[{"product":{"name":"Apple","price":0.6000000000,"id":1},"quantity":2}],
-                            |"totalAmount":1.2000000000,"createdOn":"${'$'}{json-unit.ignore}","id":1}""".trimMargin()
+                        """{"orderLines":[
+                            |{"product":{"name":"Apple","price":0.6000000000,
+                            |"offer":"buyOneGetOneFree","id":1},"quantity":2}],
+                            |"totalAmount":0.6000000000,
+                            |"createdOn":"${'$'}{json-unit.ignore}",
+                            |"id":1}""".trimMargin()
                     )
                 }
             }

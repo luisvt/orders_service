@@ -17,8 +17,8 @@ class InitDb(
     override fun run(vararg args: String?) {
         val totalProducts = productsRepository.count()
         if (totalProducts == 0L) {
-            val prod1 = Product("Apple", BigDecimal(0.60))
-            val prod2 = Product("Orange", BigDecimal(0.25))
+            val prod1 = Product("Apple", BigDecimal(0.60), "buyOneGetOneFree")
+            val prod2 = Product("Orange", BigDecimal(0.25), "buy3ForThePriceOf2")
 
             productsRepository.saveAllAndFlush(listOf(prod1, prod2))
         }

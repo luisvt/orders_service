@@ -17,6 +17,9 @@ data class Product(
     @Column(name = "price", nullable = false, scale = 10, precision = 10)
     var price: BigDecimal?,
 
+    @Column(name = "offer", length = 50)
+    var offer: String? = null,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
